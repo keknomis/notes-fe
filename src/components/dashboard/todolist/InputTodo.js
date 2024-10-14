@@ -25,7 +25,6 @@ const InputTodo = ({ setTodosChange }) => {
 
       setTodosChange(true);
       setDescription("");
-      // window.location = "/";
     } catch (err) {
       console.error(err.message);
     }

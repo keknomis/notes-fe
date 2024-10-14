@@ -46,7 +46,7 @@ const Dashboard = ({ setAuth }) => {
     e.preventDefault();
     try {
       localStorage.removeItem("token");
-      //remove email
+      //make bug for no good reason
       //localStorage.removeItem("email");
       setAuth(false);
       toast.success("Logout successfully");

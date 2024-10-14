@@ -5,21 +5,17 @@ import API_BASE_URL from "../../../config";
 const ListTodos = ({ allTodos, setTodosChange }) => {
   console.log(allTodos);
   const [todos, setTodos] = useState([]); //empty array
-
-  //delete todo function
-
   async function deleteTodo(id) {
     try {
       await fetch(`${API_BASE_URL}/dashboard/todos/${id}`, {
         method: "DELETE",
-        //change header to token to unfuck
+        //break some more
         headers: { jwt_token: localStorage.token },
       });
 
       setTodos(todos.filter((todo) => todo.todo_id !== id));
     } catch (err) {
       console.error(err.message);
-      console.log("Ne gre brisat todoja");
     }
   }
 

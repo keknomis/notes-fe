@@ -2,8 +2,6 @@ import React, { Fragment, useState } from "react";
 import API_BASE_URL from "../../../config";
 
 const EditTodo = ({ todo, setTodosChange }) => {
-  //editText function
-
   const editText = async (id) => {
     try {
       const body = { description };
