@@ -10,7 +10,7 @@ import {
   Tooltip,
   OverlayTrigger,
 } from "react-bootstrap";
-import API_BASE_URL from "../config";
+import API_BASE_URL from "../../config";
 //components
 
 import InputTodo from "./todolist/InputTodo";

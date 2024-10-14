@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from "react";
-import API_BASE_URL from '../../config';
+import API_BASE_URL from "../../../config";
 
 const EditTodo = ({ todo, setTodosChange }) => {
   //editText function
 
-  const editText = async id => {
+  const editText = async (id) => {
     try {
       const body = { description };
       const myHeaders = new Headers();
@@ -15,7 +15,7 @@ const EditTodo = ({ todo, setTodosChange }) => {
       await fetch(`${API_BASE_URL}/dashboard/todos/${id}`, {
         method: "PUT",
         headers: myHeaders,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
 
       setTodosChange(true);
@@ -62,7 +62,7 @@ const EditTodo = ({ todo, setTodosChange }) => {
                 type="text"
                 className="form-control"
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
 
