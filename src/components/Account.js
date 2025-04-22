@@ -71,7 +71,7 @@ export default function Account({ setAuth }) {
           }),
         });
         handleToggle("password");
-        alert("Password updated!");
+        // alert("Password updated!");
       } catch (err) {
         console.error("Update error:", err);
         alert("Failed to update password");
