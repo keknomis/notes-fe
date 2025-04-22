@@ -14,20 +14,38 @@ import API_BASE_URL from "../config";
 const SIDEBAR_WIDTH = 320;
 
 export default function Account({ setAuth }) {
-  const [editingField, setEditingField] = useState({
-    name: false,
-    email: false,
-    password: false,
-  });
+  const navigate = useNavigate();
+  const storedEmail = localStorage.getItem("email") || "";
+
+  // ─── Form inputs state ──────────────────────────────────────────────────
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const storedEmail = localStorage.getItem("email") || "";
 
+  // ▶️ PREFILL from localStorage immediately on mount
+  useEffect(() => {
+    const storedName = localStorage.getItem("name") || "";
+    const storedEmail = localStorage.getItem("email") || "";
+    setInputs((prev) => ({
+      ...prev,
+      name: storedName,
+      email: storedEmail,
+    }));
+  }, []); // <-- runs once, right after inputs state is defined
+
+  // ─── Which fields are in “edit” mode ─────────────────────────────────
+  const [editingField, setEditingField] = useState({
+    name: false,
+    email: false,
+    password: false,
+  });
+
+  // ─── Loading state for profile fetch ─────────────────────────────────
+  const [loading, setLoading] = useState(true);
+
+  // ▶️ FETCH authoritative profile and overwrite if needed
   useEffect(() => {
     async function fetchProfile() {
       try {
@@ -35,11 +53,8 @@ export default function Account({ setAuth }) {
           headers: { Authorization: `Bearer ${localStorage.token}` },
         });
         const data = await res.json();
-        setInputs({
-          name: data.name || "",
-          email: data.email || "",
-          password: "",
-        });
+        if (data.name) setInputs((prev) => ({ ...prev, name: data.name }));
+        if (data.email) setInputs((prev) => ({ ...prev, email: data.email }));
       } catch (err) {
         console.error("Could not fetch profile:", err);
       } finally {
@@ -49,6 +64,7 @@ export default function Account({ setAuth }) {
     fetchProfile();
   }, []);
 
+  // Toggle edit mode for a given field
   const handleToggle = (field) => {
     if (field === "password") {
       setInputs((prev) => ({ ...prev, password: "" }));
@@ -56,6 +72,7 @@ export default function Account({ setAuth }) {
     setEditingField((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
+  // Submit changes (password uses real endpoint; name/email saved to localStorage)
   const handleFieldSubmit = async (field) => {
     if (field === "password") {
       try {
@@ -77,20 +94,25 @@ export default function Account({ setAuth }) {
         alert("Failed to update password");
       }
     } else {
+      // stub: saving name/email back to localStorage
+      localStorage.setItem(field, inputs[field]);
       alert(`${field.charAt(0).toUpperCase() + field.slice(1)} saved! (TODO)`);
       handleToggle(field);
     }
   };
 
+  // Tooltip for the sidebar avatar
   const renderTooltip = (props) => (
     <Tooltip id="email-tooltip" {...props}>
       {storedEmail || "No email available"}
     </Tooltip>
   );
 
+  // Logout & clear storage
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
+    localStorage.removeItem("name");
     setAuth(false);
     navigate("/login");
   };
@@ -108,7 +130,7 @@ export default function Account({ setAuth }) {
         overflow: "hidden",
       }}
     >
-      {/* Sidebar */}
+      {/* ─── Sidebar ──────────────────────────────────────────────────── */}
       <aside
         style={{
           position: "fixed",
@@ -169,7 +191,7 @@ export default function Account({ setAuth }) {
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* ─── Main Content ─────────────────────────────────────────────── */}
       <main
         style={{
           marginLeft: SIDEBAR_WIDTH,
@@ -190,9 +212,9 @@ export default function Account({ setAuth }) {
               width: "100%",
             }}
           >
-            {/* Card 1 */}
+            {/* Card 1: Username */}
             <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
-              <Card style={{ border: "none", height: "100%" }}>
+              <Card style={{ border: "none" }}>
                 <Card.Header
                   style={{
                     backgroundColor: "#f8f9fa",
@@ -234,13 +256,10 @@ export default function Account({ setAuth }) {
                   </div>
                   <Button
                     variant="dark"
-                    onClick={() => handleFieldSubmit("name")}
                     className="w-100"
-                    style={{
-                      backgroundColor: "#200E32",
-                      border: "none",
-                    }}
+                    style={{ backgroundColor: "#200E32", border: "none" }}
                     disabled={!editingField.name}
+                    onClick={() => handleFieldSubmit("name")}
                   >
                     Save Username
                   </Button>
@@ -248,9 +267,9 @@ export default function Account({ setAuth }) {
               </Card>
             </div>
 
-            {/* Card 2 */}
+            {/* Card 2: Email */}
             <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
-              <Card style={{ border: "none", height: "100%" }}>
+              <Card style={{ border: "none" }}>
                 <Card.Header
                   style={{
                     backgroundColor: "#f8f9fa",
@@ -300,13 +319,10 @@ export default function Account({ setAuth }) {
                   </div>
                   <Button
                     variant="dark"
-                    onClick={() => handleFieldSubmit("email")}
                     className="w-100"
-                    style={{
-                      backgroundColor: "#200E32",
-                      border: "none",
-                    }}
+                    style={{ backgroundColor: "#200E32", border: "none" }}
                     disabled={!editingField.email}
+                    onClick={() => handleFieldSubmit("email")}
                   >
                     Save Email
                   </Button>
@@ -314,9 +330,9 @@ export default function Account({ setAuth }) {
               </Card>
             </div>
 
-            {/* Card 3 */}
+            {/* Card 3: Password */}
             <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
-              <Card style={{ border: "none", height: "100%" }}>
+              <Card style={{ border: "none" }}>
                 <Card.Header
                   style={{
                     backgroundColor: "#f8f9fa",
@@ -358,13 +374,10 @@ export default function Account({ setAuth }) {
                   </div>
                   <Button
                     variant="dark"
-                    onClick={() => handleFieldSubmit("password")}
                     className="w-100"
-                    style={{
-                      backgroundColor: "#200E32",
-                      border: "none",
-                    }}
+                    style={{ backgroundColor: "#200E32", border: "none" }}
                     disabled={!editingField.password}
+                    onClick={() => handleFieldSubmit("password")}
                   >
                     Save Password
                   </Button>
