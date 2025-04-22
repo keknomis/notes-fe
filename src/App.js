@@ -11,6 +11,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Landing from "./components/Landing";
+import Account from "./components/Account";
 import API_BASE_URL from "./config";
 
 import { bool } from "prop-types";
@@ -101,6 +102,16 @@ function App() {
                   <Dashboard setAuth={setAuth} />
                 ) : (
                   <Navigate to="/login" replace />
+                )
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                isAuthenticated ? (
+                  <Account setAuth={setAuth} />
+                ) : (
+                  <Navigate to="/account" replace />
                 )
               }
             />
