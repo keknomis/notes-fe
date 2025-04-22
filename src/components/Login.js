@@ -111,6 +111,7 @@ const Login = ({ setAuth }) => {
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token);
         localStorage.setItem("email", parseRes.email);
+        localStorage.setItem("userName", parseRes.userName);
         setAuth(true);
         toast.success("Login successful");
       } else {
