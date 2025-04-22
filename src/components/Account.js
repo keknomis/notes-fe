@@ -281,14 +281,14 @@ export default function Account({ setAuth }) {
                 </Card.Header>
                 <Card.Body className="d-flex flex-column justify-content-between">
                   <div>
-                    <OverlayTrigger
+                    {/* <OverlayTrigger
                       delay={{ show: 250, hide: 400 }}
                       overlay={renderTooltip}
                     >
                       <Form.Label style={{ color: "#200E32" }}>
                         Current Email
                       </Form.Label>
-                    </OverlayTrigger>
+                    </OverlayTrigger> */}
                     <Button
                       variant="outline-dark"
                       size="sm"
