@@ -1,3 +1,4 @@
+// src/components/Account.js
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,8 +8,6 @@ import {
   Tooltip,
   OverlayTrigger,
   Spinner,
-  Row,
-  Col,
 } from "react-bootstrap";
 import API_BASE_URL from "../config";
 
@@ -20,12 +19,15 @@ export default function Account({ setAuth }) {
     email: false,
     password: false,
   });
-  const [inputs, setInputs] = useState({ name: "", email: "", password: "" });
+  const [inputs, setInputs] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("email") || "";
 
-  // fetch current profile
   useEffect(() => {
     async function fetchProfile() {
       try {
@@ -47,16 +49,13 @@ export default function Account({ setAuth }) {
     fetchProfile();
   }, []);
 
-  // Clear password field when toggling password edit mode
   const handleToggle = (field) => {
     if (field === "password") {
-      // Always clear password when entering or exiting edit mode
       setInputs((prev) => ({ ...prev, password: "" }));
     }
     setEditingField((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  // submit updates by field
   const handleFieldSubmit = async (field) => {
     if (field === "password") {
       try {
@@ -72,17 +71,13 @@ export default function Account({ setAuth }) {
           }),
         });
         handleToggle("password");
-        alert("Password updated (but vulnerable)!");
+        alert("Password updated!");
       } catch (err) {
         console.error("Update error:", err);
         alert("Failed to update password");
       }
     } else {
-      alert(
-        `${
-          field.charAt(0).toUpperCase() + field.slice(1)
-        } saved! (TODO: endpoint)`
-      );
+      alert(`${field.charAt(0).toUpperCase() + field.slice(1)} saved! (TODO)`);
       handleToggle(field);
     }
   };
@@ -129,7 +124,6 @@ export default function Account({ setAuth }) {
           boxSizing: "border-box",
         }}
       >
-        {/* HEADER */}
         <div style={{ textAlign: "center" }}>
           <OverlayTrigger
             delay={{ show: 250, hide: 400 }}
@@ -156,8 +150,6 @@ export default function Account({ setAuth }) {
             {inputs.name}
           </h4>
         </div>
-
-        {/* FOOTER */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <Button
             as={Link}
@@ -182,9 +174,6 @@ export default function Account({ setAuth }) {
         style={{
           marginLeft: SIDEBAR_WIDTH,
           flexGrow: 1,
-          display: "flex",
-          justifyContent: loading ? "center" : "flex-start",
-          alignItems: loading ? "center" : "flex-start",
           overflowY: "auto",
           padding: "1.5rem",
           boxSizing: "border-box",
@@ -193,10 +182,17 @@ export default function Account({ setAuth }) {
         {loading ? (
           <Spinner animation="border" variant="secondary" />
         ) : (
-          <Row xs={1} lg={3} className="g-3" style={{ width: "100%" }}>
-            {/* Username Card */}
-            <Col className="d-flex">
-              <Card className="flex-fill h-100" style={{ border: "none" }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "2%",
+              width: "100%",
+            }}
+          >
+            {/* Card 1 */}
+            <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
+              <Card style={{ border: "none", height: "100%" }}>
                 <Card.Header
                   style={{
                     backgroundColor: "#f8f9fa",
@@ -213,12 +209,7 @@ export default function Account({ setAuth }) {
                       size="sm"
                       className="mb-3"
                       style={{ borderColor: "#200E32", color: "#200E32" }}
-                      onClick={() =>
-                        setEditingField((prev) => ({
-                          ...prev,
-                          name: !prev.name,
-                        }))
-                      }
+                      onClick={() => handleToggle("name")}
                     >
                       {editingField.name ? "Cancel" : "Edit Username"}
                     </Button>
@@ -243,21 +234,23 @@ export default function Account({ setAuth }) {
                   </div>
                   <Button
                     variant="dark"
-                    type="button"
-                    className="w-100 mt-3"
-                    style={{ backgroundColor: "#200E32", border: "none" }}
                     onClick={() => handleFieldSubmit("name")}
+                    className="w-100"
+                    style={{
+                      backgroundColor: "#200E32",
+                      border: "none",
+                    }}
                     disabled={!editingField.name}
                   >
                     Save Username
                   </Button>
                 </Card.Body>
               </Card>
-            </Col>
+            </div>
 
-            {/* Email Card */}
-            <Col className="d-flex">
-              <Card className="flex-fill h-100" style={{ border: "none" }}>
+            {/* Card 2 */}
+            <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
+              <Card style={{ border: "none", height: "100%" }}>
                 <Card.Header
                   style={{
                     backgroundColor: "#f8f9fa",
@@ -282,12 +275,7 @@ export default function Account({ setAuth }) {
                       size="sm"
                       className="mb-3"
                       style={{ borderColor: "#200E32", color: "#200E32" }}
-                      onClick={() =>
-                        setEditingField((prev) => ({
-                          ...prev,
-                          email: !prev.email,
-                        }))
-                      }
+                      onClick={() => handleToggle("email")}
                     >
                       {editingField.email ? "Cancel" : "Edit Email"}
                     </Button>
@@ -312,21 +300,23 @@ export default function Account({ setAuth }) {
                   </div>
                   <Button
                     variant="dark"
-                    type="button"
-                    className="w-100 mt-3"
-                    style={{ backgroundColor: "#200E32", border: "none" }}
                     onClick={() => handleFieldSubmit("email")}
+                    className="w-100"
+                    style={{
+                      backgroundColor: "#200E32",
+                      border: "none",
+                    }}
                     disabled={!editingField.email}
                   >
                     Save Email
                   </Button>
                 </Card.Body>
               </Card>
-            </Col>
+            </div>
 
-            {/* Password Card */}
-            <Col className="d-flex">
-              <Card className="flex-fill h-100" style={{ border: "none" }}>
+            {/* Card 3 */}
+            <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
+              <Card style={{ border: "none", height: "100%" }}>
                 <Card.Header
                   style={{
                     backgroundColor: "#f8f9fa",
@@ -343,12 +333,7 @@ export default function Account({ setAuth }) {
                       size="sm"
                       className="mb-3"
                       style={{ borderColor: "#200E32", color: "#200E32" }}
-                      onClick={() =>
-                        setEditingField((prev) => ({
-                          ...prev,
-                          password: !prev.password,
-                        }))
-                      }
+                      onClick={() => handleToggle("password")}
                     >
                       {editingField.password ? "Cancel" : "Edit Password"}
                     </Button>
@@ -373,18 +358,20 @@ export default function Account({ setAuth }) {
                   </div>
                   <Button
                     variant="dark"
-                    type="button"
-                    className="w-100 mt-3"
-                    style={{ backgroundColor: "#200E32", border: "none" }}
                     onClick={() => handleFieldSubmit("password")}
+                    className="w-100"
+                    style={{
+                      backgroundColor: "#200E32",
+                      border: "none",
+                    }}
                     disabled={!editingField.password}
                   >
                     Save Password
                   </Button>
                 </Card.Body>
               </Card>
-            </Col>
-          </Row>
+            </div>
+          </div>
         )}
       </main>
     </div>
