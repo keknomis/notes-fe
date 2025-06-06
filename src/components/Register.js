@@ -162,7 +162,7 @@ const Register = ({ setAuth }) => {
                 <Form.Control
                   type="text"
                   name="name"
-                  placeholder="Name"
+                  placeholder="name"
                   value={name}
                   onChange={onChange}
                   required

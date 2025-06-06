@@ -184,7 +184,7 @@ const Login = ({ setAuth }) => {
                 <Form.Control
                   type="password"
                   name="password"
-                  placeholder="Password"
+                  placeholder="password"
                   value={password}
                   onChange={onChange}
                   required
