@@ -1,148 +1,15 @@
-// // src/components/Dashboard.js
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import { toast } from "react-toastify";
-// import {
-//   Card,
-//   Button,
-//   Tooltip,
-//   OverlayTrigger,
-//   Spinner,
-// } from "react-bootstrap";
-// import API_BASE_URL from "../../config";
-
-// // components
-// import InputTodo from "./todolist/InputTodo";
-// import ListTodos from "./todolist/ListTodos";
-
-// // const SIDEBAR_WIDTH = 320;
-
-// const Dashboard = ({ setAuth }) => {
-//   const [name, setName] = useState("");
-//   const [allTodos, setAllTodos] = useState([]);
-//   const [todosChange, setTodosChange] = useState(false);
-//   const [loading, setLoading] = useState(true);
-
-//   const email = localStorage.getItem("email");
-//   const userInitial = name.charAt(0).toUpperCase() || "?";
-
-//   useEffect(() => {
-//     // remove default margins/padding
-//     document.body.style.margin = "0";
-//     document.body.style.padding = "0";
-//     return () => {
-//       document.body.style.margin = "";
-//       document.body.style.padding = "";
-//     };
-//   }, []);
-
-//   const renderTooltip = (props) => (
-//     <Tooltip id="email-tooltip" {...props}>
-//       {email || "No email available"}
-//     </Tooltip>
-//   );
-
-//   const getProfile = async () => {
-//     try {
-//       const res = await fetch(`${API_BASE_URL}/dashboard/`, {
-//         method: "GET",
-//         headers: { Authorization: `Bearer ${localStorage.token}` },
-//       });
-//       const data = await res.json();
-//       const first = Array.isArray(data) && data[0] ? data[0] : {};
-//       const userName =
-//         first.user_name ?? first.userName ?? first.username ?? "";
-//       setName(userName);
-//       setAllTodos(Array.isArray(data) ? data : []);
-//     } catch (err) {
-//       console.error("getProfile error:", err);
-//       toast.error("Could not load todos");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     getProfile();
-//     setTodosChange(false);
-//   }, [todosChange]);
-
-//   const logout = (e) => {
-//     e.preventDefault();
-//     localStorage.removeItem("token");
-//     setAuth(false);
-//     toast.success("Logged out");
-//   };
-
-//   return (
-//     <>
-//       Fixed Sidebar
-//       <aside className="dashboard-sidebar">
-//         <OverlayTrigger
-//           placement="bottom"
-//           delay={{ show: 250, hide: 400 }}
-//           overlay={renderTooltip}
-//         >
-//           <div className="avatar-lg">{userInitial}</div>
-//         </OverlayTrigger>
-//         <h4 className="sidebar-username">{name}</h4>{" "}
-//         <Button
-//           as={Link}
-//           to="/account"
-//           variant="outline-dark"
-//           className="sidebar-logout"
-//           style={{ borderColor: "#200E32", color: "#200E32" }}
-//         >
-//           My Account
-//         </Button>
-//         <Button
-//           variant="outline-dark"
-//           onClick={logout}
-//           className="sidebar-logout"
-//         >
-//           Logout
-//         </Button>
-//       </aside>
-
-//       {/* Main Content */}
-//       <main className="dashboard-main">
-//         {loading ? (
-//           <div className="loading-container">
-//             <Spinner animation="border" variant="secondary" />
-//           </div>
-//         ) : (
-//           <Card className="main-card">
-//             <Card.Body>
-//               <InputTodo setTodosChange={setTodosChange} />
-//               <hr />
-//               <ListTodos allTodos={allTodos} setTodosChange={setTodosChange} />
-//             </Card.Body>
-//           </Card>
-//         )}
-//       </main>
-//     </>
-//   );
-// };
-
-// export default Dashboard;
 // src/components/Dashboard.js
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Card, Button, Spinner } from "react-bootstrap";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  Card,
-  Button,
-  Tooltip,
-  OverlayTrigger,
-  Spinner,
-} from "react-bootstrap";
 import API_BASE_URL from "../../config";
 
 // components
 import InputTodo from "./todolist/InputTodo";
 import ListTodos from "./todolist/ListTodos";
 
-const SIDEBAR_WIDTH = 320;
+const SIDEBAR_WIDTH = 300;
 
 export default function Dashboard({ setAuth }) {
   const [name, setName] = useState("");
@@ -150,8 +17,13 @@ export default function Dashboard({ setAuth }) {
   const [todosChange, setTodosChange] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const email = localStorage.getItem("email");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = localStorage.getItem("email") || "";
   const userInitial = name.charAt(0).toUpperCase() || "?";
+
+  // Determine if we are on the dashboard page
+  const isDashboard = location.pathname === "/dashboard";
 
   useEffect(() => {
     document.body.style.margin = "0";
@@ -161,12 +33,6 @@ export default function Dashboard({ setAuth }) {
       document.body.style.padding = "";
     };
   }, []);
-
-  const renderTooltip = (props) => (
-    <Tooltip id="email-tooltip" {...props}>
-      {email || "No email available"}
-    </Tooltip>
-  );
 
   const getProfile = async () => {
     try {
@@ -192,87 +58,117 @@ export default function Dashboard({ setAuth }) {
     setTodosChange(false);
   }, [todosChange]);
 
-  const logout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
+    localStorage.removeItem("name");
     setAuth(false);
-    toast.success("Logged out");
+    navigate("/login");
   };
 
   return (
     <div
       style={{
+        minHeight: "100vh",
+        width: "100%",
         display: "flex",
-        height: "100vh",
-        margin: 0,
-        padding: 0,
-        background: "#f8f9fa",
-        overflow: "hidden",
+        background: "transparent", // No background here anymore
       }}
     >
-      {/* Fixed Sidebar */}
+      {/* Sidebar */}
       <aside
         style={{
+          width: SIDEBAR_WIDTH,
+          height: "100vh",
+          background: "linear-gradient(135deg, #F7CAC9 0%, #92A8D1 100%)",
+          backdropFilter: "blur(5px)", // Optional
+          zIndex: 10,
           position: "fixed",
           top: 0,
           left: 0,
-          width: SIDEBAR_WIDTH,
-          height: "100vh",
-          background: "#1AD9B6",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "2rem 1rem",
-          boxSizing: "border-box",
+          // Remove background gradient
         }}
       >
-        {/* Top: avatar + name */}
-        <div style={{ textAlign: "center" }}>
-          <OverlayTrigger
-            delay={{ show: 250, hide: 400 }}
-            overlay={renderTooltip}
-          >
+        <div>
+          <div style={{ width: "100%", textAlign: "center" }}>
             <div
               style={{
                 width: 80,
                 height: 80,
                 borderRadius: "50%",
-                backgroundColor: "#fff",
-                color: "#200E32",
+                background: "linear-gradient(135deg, #92A8D1 0%, #F7CAC9 100%)",
+                color: "#2d3e50",
                 fontSize: "2rem",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 1rem",
+                border: "4px solid #fff",
+                boxShadow: "0 4px 16px 0 rgba(146,168,209,0.15)",
               }}
             >
               {userInitial}
             </div>
-          </OverlayTrigger>
-          <h4 style={{ color: "#200E32", textTransform: "capitalize" }}>
-            {name}
-          </h4>
+            <div
+              style={{
+                color: "#2d3e50",
+                fontWeight: 700,
+                textTransform: "capitalize",
+              }}
+            >
+              {name}
+            </div>
+            <div
+              style={{
+                color: "#5f6f86",
+                fontSize: "1.05rem",
+                marginBottom: "2.5rem",
+              }}
+            >
+              {email}
+            </div>
+          </div>
         </div>
-
-        {/* Bottom: navigation buttons */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.6rem",
+            marginBottom: "2.5rem",
+            alignItems: "center",
+          }}
+        >
           <Button
             as={Link}
-            to="/account"
-            variant="outline-dark"
+            to={isDashboard ? "/account" : "/dashboard"}
             style={{
-              borderColor: "#200E32",
-              color: "#200E32",
+              background: "#92A8D1",
+              color: "#fff",
+              border: "none",
+              fontWeight: 600,
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px 0 rgba(146,168,209,0.10)",
+              width: "85%",
+              transition: "background 0.2s, box-shadow 0.2s",
             }}
           >
-            My Account
+            {isDashboard ? "My Account" : "Dashboard"}
           </Button>
           <Button
-            variant="outline-dark"
-            onClick={logout}
+            onClick={handleLogout}
             style={{
-              borderColor: "#200E32",
-              color: "#200E32",
+              background: "#fff",
+              color: "#92A8D1",
+              border: "1.5px solid #92A8D1",
+              fontWeight: 600,
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px 0 rgba(146,168,209,0.10)",
+              width: "85%",
+              transition: "background 0.2s, color 0.2s",
             }}
           >
             Logout
@@ -283,45 +179,65 @@ export default function Dashboard({ setAuth }) {
       {/* Main Content */}
       <main
         style={{
-          marginLeft: SIDEBAR_WIDTH,
+          marginLeft: SIDEBAR_WIDTH, // Push right of sidebar
           flexGrow: 1,
-          overflowY: "auto",
-          padding: "1.5rem",
-          boxSizing: "border-box",
+          minHeight: "100vh",
           display: "flex",
-          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center", // Center the card horizontally
+          padding: "2rem", // Optional: for responsiveness
+          background: "transparent",
         }}
       >
-        {loading ? (
-          <Spinner animation="border" variant="secondary" />
-        ) : (
-          <Card
-            style={{
-              border: "none",
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Card.Body
+        <Card
+          style={{
+            width: "100%",
+            maxWidth: 900,
+            margin: "0 auto",
+            background: "#fff",
+            borderRadius: "18px",
+            boxShadow: "0 8px 32px 0 rgba(146,168,209,0.10)",
+            border: "1.5px solid #92A8D1",
+          }}
+        >
+          <Card.Body>
+            <h2
               style={{
-                padding: 0,
-                display: "flex",
-                flexDirection: "column",
-                flex: 1,
+                color: "#2d3e50",
+                fontWeight: 700,
+                marginBottom: "1.2rem",
+                letterSpacing: "-1px",
+                fontSize: "2rem",
+                textAlign: "center",
               }}
             >
-              <InputTodo setTodosChange={setTodosChange} />
-              <hr className="my-2" />
-              <div style={{ flex: 1, overflowY: "auto" }}>
-                <ListTodos
-                  allTodos={allTodos}
-                  setTodosChange={setTodosChange}
-                />
+              Dashboard
+            </h2>
+            {loading ? (
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Spinner animation="border" variant="info" />
               </div>
-            </Card.Body>
-          </Card>
-        )}
+            ) : (
+              <>
+                <InputTodo setTodosChange={setTodosChange} />
+                <hr className="my-2" style={{ borderColor: "#a18cd1" }} />
+                <div className="todos-container">
+                  <ListTodos
+                    allTodos={allTodos}
+                    setTodosChange={setTodosChange}
+                  />
+                </div>
+              </>
+            )}
+          </Card.Body>
+        </Card>
       </main>
     </div>
   );

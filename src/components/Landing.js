@@ -1,23 +1,3 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-
-// const Landing = () => {
-//   return (
-//     <div className="jumbotron mt-5">
-//       <h1>Todo list</h1>
-//       <p>Sign In and start building your todo list</p>
-//       <Link to="/login" className="btn btn-primary">
-//         Login
-//       </Link>
-//       <Link to="/register" className="btn btn-primary ml-3">
-//         Register
-//       </Link>
-//     </div>
-//   );
-// };
-
-// export default Landing;
-
 // src/components/Landing.js
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -44,7 +24,8 @@ const Landing = () => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        backgroundColor: "#1AD9B6", // your requested background
+        background:
+          "linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #a18cd1 100%)",
         overflow: "hidden",
       }}
     >
@@ -54,10 +35,15 @@ const Landing = () => {
           xs={12}
           md={5}
           className="d-flex flex-column justify-content-center"
-          style={{ color: "#200E32", padding: "2rem" }}
+          style={{ color: "#f8f8ff", padding: "2rem" }}
         >
-          <h1 className="display-3">Tippy Notes Testing Sandbox</h1>
-          <p className="lead">
+          <h1
+            className="display-3"
+            style={{ fontWeight: 800, letterSpacing: "-2px", color: "#e0e6f7" }}
+          >
+            Clabs Notes Testing Sandbox
+          </h1>
+          <p className="lead" style={{ fontSize: "1.3rem", color: "#d1c4e9" }}>
             Welcome! Dive in and start creating your personalized to‑do lists
             with ease. Manage tasks, test new features, and streamline your
             workflow in our interactive playground.
@@ -73,7 +59,9 @@ const Landing = () => {
             style={{
               width: "2px",
               height: "60%",
-              backgroundColor: "#200E32",
+              background: "linear-gradient(180deg, #fff 0%, #a18cd1 100%)",
+              borderRadius: "2px",
+              opacity: 0.5,
             }}
           />
         </Col>
@@ -83,32 +71,93 @@ const Landing = () => {
           xs={12}
           md={5}
           className="d-flex flex-column justify-content-center align-items-center"
-          style={{ padding: "2rem" }}
+          style={{
+            padding: "2rem",
+            alignItems: "stretch",
+            gap: "1.5rem",
+          }}
         >
-          <Button
-            as={Link}
-            to="/login"
-            variant="outline-light"
-            size="lg"
-            className="w-75 mb-3"
-            style={{ color: "#200E32", borderColor: "#200E32" }}
-          >
-            Login
-          </Button>
-          <Button
-            as={Link}
-            to="/register"
-            variant="light"
-            size="lg"
-            className="w-75"
+          <div
             style={{
-              backgroundColor: "#200E32",
-              color: "#fff",
-              border: "none",
+              background: "rgba(255,255,255,0.10)",
+              borderRadius: "18px",
+              boxShadow: "0 8px 32px 0 rgba(79,91,213,0.10)",
+              padding: "2.5rem 2rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1.2rem",
+              width: "100%",
+              maxWidth: "370px",
             }}
           >
-            Register
-          </Button>
+            <h2
+              style={{
+                color: "#fff",
+                fontWeight: 700,
+                marginBottom: "1.2rem",
+                letterSpacing: "-1px",
+                fontSize: "2rem",
+                textAlign: "center",
+              }}
+            >
+              Get Started
+            </h2>
+            <Button
+              as={Link}
+              to="/login"
+              size="lg"
+              className="w-100"
+              style={{
+                background: "linear-gradient(90deg, #4f5bd5 0%, #962fbf 100%)",
+                color: "#fff",
+                border: "none",
+                fontWeight: 700,
+                fontSize: "1.15rem",
+                borderRadius: "8px",
+                marginBottom: "0.7rem",
+                boxShadow: "0 2px 12px 0 rgba(79,91,213,0.13)",
+                transition: "transform 0.1s",
+              }}
+            >
+              <span style={{ marginRight: "0.5rem", fontSize: "1.2em" }}>
+                🔑
+              </span>
+              Login
+            </Button>
+            <Button
+              as={Link}
+              to="/register"
+              size="lg"
+              className="w-100"
+              style={{
+                background: "#fff",
+                color: "#4f5bd5",
+                border: "none",
+                fontWeight: 700,
+                fontSize: "1.15rem",
+                borderRadius: "8px",
+                boxShadow: "0 2px 12px 0 rgba(150,47,191,0.10)",
+                borderBottom: "3px solid #962fbf",
+                transition: "transform 0.1s",
+              }}
+            >
+              <span style={{ marginRight: "0.5rem", fontSize: "1.2em" }}>
+                📝
+              </span>
+              Register
+            </Button>
+            <div
+              style={{
+                color: "#e0e6f7",
+                fontSize: "0.98rem",
+                marginTop: "0.7rem",
+                textAlign: "center",
+              }}
+            >
+              New here? Register for a free account!
+            </div>
+          </div>
         </Col>
       </Row>
     </Container>

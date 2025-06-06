@@ -1,79 +1,4 @@
-// import React, { Fragment, useState } from "react";
-// import { Link } from "react-router-dom";
-// import { toast } from "react-toastify";
-// import API_BASE_URL from "../config";
-
-// const Login = ({ setAuth }) => {
-//   const [inputs, setInputs] = useState({
-//     email: "",
-//     password: "",
-//   });
-//   const { email, password } = inputs;
-
-//   const onChange = (e) => {
-//     setInputs({ ...inputs, [e.target.name]: e.target.value });
-//   };
-
-//   const onSubmitForm = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const body = { email, password };
-
-//       const response = await fetch(`${API_BASE_URL}/auth/login`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(body),
-//       });
-//       const parseRes = await response.json();
-
-//       if (parseRes.token) {
-//         localStorage.setItem("token", parseRes.token);
-//         localStorage.setItem("email", parseRes.email);
-//         setAuth(true);
-//         console.log(parseRes);
-//         toast.success("login successfully");
-//       } else {
-//         setAuth(false);
-//         toast.error(parseRes);
-//       }
-//     } catch (err) {
-//       console.error(err.message);
-//     }
-//   };
-
-//   return (
-//     <Fragment>
-//       <h1 className="text-center my-5">Login</h1>
-//       <form onSubmit={onSubmitForm}>
-//         <input
-//           type="email"
-//           name="email"
-//           placeholder="email"
-//           className="form-control my-3"
-//           value={email}
-//           onChange={(e) => onChange(e)}
-//         />
-//         <input
-//           type="password"
-//           name="password"
-//           placeholder="password"
-//           className="form-control my-3"
-//           value={password}
-//           onChange={(e) => onChange(e)}
-//         />
-//         <button className="btn btn-success btn-block">Sumbit</button>
-//         <Link to="/register">Register</Link>
-//       </form>
-//       {/* <button onClick={()=> setAuth(true)}>Logout</button> */}
-//     </Fragment>
-//   );
-// };
-
-// export default Login;
-
-/// src/components/Login.js
+// src/components/Login.js
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -85,7 +10,6 @@ const Login = ({ setAuth }) => {
   const { email, password } = inputs;
 
   useEffect(() => {
-    // remove any default body margins/padding
     document.body.style.margin = "0";
     document.body.style.padding = "0";
     return () => {
@@ -134,7 +58,8 @@ const Login = ({ setAuth }) => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        backgroundColor: "#1AD9B6",
+        background:
+          "linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #a18cd1 100%)",
         overflow: "hidden",
       }}
     >
@@ -144,16 +69,25 @@ const Login = ({ setAuth }) => {
           xs={12}
           md={5}
           className="d-flex flex-column justify-content-center"
-          style={{ color: "#200E32", padding: "2rem" }}
+          style={{ color: "#f8f8ff", padding: "2rem" }}
         >
-          <h1 className="display-4 mb-4">Welcome Back!</h1>
-          <p className="lead">
-            Log in to access your Tippy Notes Testing Sandbox. Manage your tasks
+          <h1
+            className="display-4 mb-4"
+            style={{
+              color: "#e0e6f7",
+              fontWeight: 800,
+              letterSpacing: "-2px",
+            }}
+          >
+            Welcome Back!
+          </h1>
+          <p className="lead" style={{ color: "#d1c4e9" }}>
+            Log in to access your Clabs Notes Testing Sandbox. Manage your tasks
             seamlessly. Create new, update existing and delete deprecated work
             items.
           </p>
-          <p className="lead">
-            Never loose track of your work and stay on top of your tasks
+          <p className="lead" style={{ color: "#d1c4e9" }}>
+            Never lose track of your work and stay on top of your tasks.
           </p>
         </Col>
 
@@ -166,7 +100,9 @@ const Login = ({ setAuth }) => {
             style={{
               width: "2px",
               height: "60%",
-              backgroundColor: "#200E32",
+              background: "linear-gradient(180deg, #fff 0%, #a18cd1 100%)",
+              borderRadius: "2px",
+              opacity: 0.5,
             }}
           />
         </Col>
@@ -176,72 +112,133 @@ const Login = ({ setAuth }) => {
           xs={12}
           md={5}
           className="d-flex flex-column justify-content-center align-items-center"
-          style={{ padding: "2rem" }}
+          style={{
+            padding: "2rem",
+            alignItems: "stretch",
+            gap: "1.5rem",
+          }}
         >
-          <Card style={{ width: "100%", maxWidth: "400px", border: "none" }}>
-            <Card.Body>
-              {/* Back Home button */}
-              <div className="mb-3 text-start">
-                <Button
-                  as={Link}
-                  to="/"
-                  variant="outline-dark"
-                  size="sm"
-                  style={{ borderColor: "#200E32", color: "#200E32" }}
-                >
-                  ← Back Home
-                </Button>
-              </div>
-
-              <Card.Title
-                className="text-center mb-4"
-                style={{ color: "#200E32" }}
+          <div
+            style={{
+              background: "rgba(255,255,255,0.10)",
+              borderRadius: "18px",
+              boxShadow: "0 8px 32px 0 rgba(79,91,213,0.10)",
+              padding: "2.5rem 2rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1.2rem",
+              width: "100%",
+              maxWidth: "370px",
+            }}
+          >
+            {/* Back Home button */}
+            <div className="mb-3 text-start w-100">
+              <Button
+                as={Link}
+                to="/"
+                variant="outline-light"
+                size="sm"
+                style={{
+                  borderColor: "#fff",
+                  color: "#fff",
+                  fontWeight: 600,
+                  borderRadius: "6px",
+                  padding: "0.25rem 0.9rem",
+                }}
               >
-                Login
-              </Card.Title>
-              <Form onSubmit={onSubmitForm}>
-                <Form.Group controlId="formEmail" className="mb-3">
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={onChange}
-                    required
-                  />
-                </Form.Group>
-                <Form.Group controlId="formPassword" className="mb-3">
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={onChange}
-                    required
-                  />
-                </Form.Group>
-                <Button
-                  variant="dark"
-                  type="submit"
-                  className="w-100 mb-3"
-                  style={{ backgroundColor: "#200E32", border: "none" }}
+                ← Home
+              </Button>
+            </div>
+            <h2
+              className="mb-4"
+              style={{
+                color: "#fff",
+                fontWeight: 700,
+                letterSpacing: "-1px",
+                fontSize: "2rem",
+                textAlign: "center",
+              }}
+            >
+              Login
+            </h2>
+            <Form onSubmit={onSubmitForm} style={{ width: "100%" }}>
+              <Form.Group controlId="formEmail" className="mb-3">
+                <Form.Control
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={onChange}
+                  required
+                  style={{
+                    background: "#f8f8ff",
+                    color: "#2a5298",
+                    border: "1.5px solid #a18cd1",
+                    borderRadius: "7px",
+                    fontSize: "1rem",
+                  }}
+                />
+              </Form.Group>
+              <Form.Group controlId="formPassword" className="mb-3">
+                <Form.Control
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={onChange}
+                  required
+                  style={{
+                    background: "#f8f8ff",
+                    color: "#2a5298",
+                    border: "1.5px solid #a18cd1",
+                    borderRadius: "7px",
+                    fontSize: "1rem",
+                  }}
+                />
+              </Form.Group>
+              <Button
+                type="submit"
+                className="w-100 mb-3"
+                style={{
+                  background:
+                    "linear-gradient(90deg, #4f5bd5 0%, #962fbf 100%)",
+                  color: "#fff",
+                  border: "none",
+                  fontWeight: 700,
+                  fontSize: "1.15rem",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 12px 0 rgba(79,91,213,0.13)",
+                  transition: "transform 0.1s",
+                }}
+              >
+                <span
+                  style={{
+                    marginRight: "0.5rem",
+                    fontSize: "1.2em",
+                  }}
                 >
-                  Submit
-                </Button>
-              </Form>
-              <div className="text-center">
-                <small style={{ color: "#200E32" }}>
-                  Don’t have an account?{" "}
-                  <Link
-                    to="/register"
-                    style={{ color: "#200E32", fontWeight: "bold" }}
-                  >
-                    Register
-                  </Link>
-                </small>
-              </div>
-            </Card.Body>
-          </Card>
+                  🔑
+                </span>
+                Login
+              </Button>
+            </Form>
+            <div className="text-center w-100">
+              <small style={{ color: "#e0e6f7" }}>
+                Don’t have an account?{" "}
+                <Link
+                  to="/register"
+                  style={{
+                    color: "#4f5bd5",
+                    fontWeight: "bold",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Register
+                </Link>
+              </small>
+            </div>
+          </div>
         </Col>
       </Row>
     </Container>

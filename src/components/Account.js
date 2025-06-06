@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import API_BASE_URL from "../config";
 
-const SIDEBAR_WIDTH = 320;
+const SIDEBAR_WIDTH = 300;
 
 export default function Account({ setAuth }) {
   const navigate = useNavigate();
@@ -122,15 +122,13 @@ export default function Account({ setAuth }) {
   return (
     <div
       style={{
+        minHeight: "100vh",
+        width: "100%",
         display: "flex",
-        height: "100vh",
-        margin: 0,
-        padding: 0,
-        background: "#f8f9fa",
-        overflow: "hidden",
+        background: "transparent", // Let the body handle the background
       }}
     >
-      {/* ─── Sidebar ──────────────────────────────────────────────────── */}
+      {/* Sidebar */}
       <aside
         style={{
           position: "fixed",
@@ -138,254 +136,305 @@ export default function Account({ setAuth }) {
           left: 0,
           width: SIDEBAR_WIDTH,
           height: "100vh",
-          background: "#1AD9B6",
+          zIndex: 10,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "2rem 1rem",
-          boxSizing: "border-box",
+          background: "linear-gradient(135deg, #F7CAC9 0%, #92A8D1 100%)",
+          boxShadow: "2px 0 16px 0 rgba(146,168,209,0.13)",
         }}
       >
-        <div style={{ textAlign: "center" }}>
-          <OverlayTrigger
-            delay={{ show: 250, hide: 400 }}
-            overlay={renderTooltip}
-          >
+        <div>
+          <div style={{ width: "100%", textAlign: "center" }}>
+            <OverlayTrigger
+              delay={{ show: 250, hide: 400 }}
+              overlay={renderTooltip}
+            >
+              <div
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: "50%",
+                  background:
+                    "linear-gradient(135deg, #92A8D1 0%, #F7CAC9 100%)",
+                  color: "#2d3e50",
+                  fontSize: "2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 1rem",
+                  border: "4px solid #fff",
+                  boxShadow: "0 4px 16px 0 rgba(146,168,209,0.15)",
+                }}
+              >
+                {userInitial}
+              </div>
+            </OverlayTrigger>
             <div
               style={{
-                width: 80,
-                height: 80,
-                borderRadius: "50%",
-                backgroundColor: "#fff",
-                color: "#200E32",
-                fontSize: "2rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 1rem",
+                color: "#2d3e50",
+                fontWeight: 700,
+                textTransform: "capitalize",
               }}
             >
-              {userInitial}
+              {inputs.name}
             </div>
-          </OverlayTrigger>
-          <h4 style={{ color: "#200E32", textTransform: "capitalize" }}>
-            {inputs.name}
-          </h4>
+            <div
+              style={{
+                color: "#5f6f86",
+                fontSize: "1.05rem",
+                marginBottom: "2.5rem",
+              }}
+            >
+              {inputs.email}
+            </div>
+          </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.6rem",
+            marginBottom: "2.5rem",
+            alignItems: "center",
+          }}
+        >
           <Button
             as={Link}
             to="/dashboard"
-            variant="outline-dark"
-            style={{ borderColor: "#200E32", color: "#200E32" }}
+            style={{
+              background: "#92A8D1",
+              color: "#fff",
+              border: "none",
+              fontWeight: 600,
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px 0 rgba(146,168,209,0.10)",
+              width: "85%",
+              transition: "background 0.2s, box-shadow 0.2s",
+            }}
           >
             Dashboard
           </Button>
           <Button
-            variant="outline-dark"
             onClick={handleLogout}
-            style={{ borderColor: "#200E32", color: "#200E32" }}
+            style={{
+              background: "#fff",
+              color: "#92A8D1",
+              border: "1.5px solid #92A8D1",
+              fontWeight: 600,
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px 0 rgba(146,168,209,0.10)",
+              width: "85%",
+              transition: "background 0.2s, color 0.2s",
+            }}
           >
             Logout
           </Button>
         </div>
       </aside>
 
-      {/* ─── Main Content ─────────────────────────────────────────────── */}
+      {/* Main Content */}
       <main
         style={{
           marginLeft: SIDEBAR_WIDTH,
-          flexGrow: 1,
-          overflowY: "auto",
-          padding: "1.5rem",
-          boxSizing: "border-box",
+          width: `calc(100% - ${SIDEBAR_WIDTH}px)`,
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "transparent",
+          overflow: "hidden",
         }}
       >
-        {loading ? (
-          <Spinner animation="border" variant="secondary" />
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "2%",
-              width: "100%",
-            }}
-          >
-            {/* Card 1: Username */}
-            <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
-              <Card style={{ border: "none" }}>
-                <Card.Header
-                  style={{
-                    backgroundColor: "#f8f9fa",
-                    color: "#200E32",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Username
-                </Card.Header>
-                <Card.Body className="d-flex flex-column justify-content-between">
-                  <div>
+        <Card
+          style={{
+            width: "100%",
+            maxWidth: 900,
+            margin: "0 auto",
+            background: "#fff",
+            borderRadius: "18px",
+            boxShadow: "0 8px 32px 0 rgba(146,168,209,0.10)",
+            border: "1.5px solid #92A8D1",
+          }}
+        >
+          <Card.Body>
+            <h2
+              style={{
+                color: "#2d3e50",
+                fontWeight: 700,
+                marginBottom: "1.2rem",
+                letterSpacing: "-1px",
+                fontSize: "2rem",
+                textAlign: "center",
+              }}
+            >
+              Account Settings
+            </h2>
+            {loading ? (
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Spinner animation="border" variant="info" />
+              </div>
+            ) : (
+              <Form>
+                {/* Username */}
+                <Form.Group className="mb-4">
+                  <Form.Label style={{ color: "#5f6f86", fontWeight: 600 }}>
+                    Username
+                  </Form.Label>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <Form.Control
+                      type="text"
+                      value={inputs.name}
+                      disabled={!editingField.name}
+                      onChange={(e) =>
+                        setInputs({ ...inputs, name: e.target.value })
+                      }
+                      style={{
+                        background: "#f7faff",
+                        color: "#2d3e50",
+                        border: "1px solid #92A8D1",
+                        borderRadius: 8,
+                        maxWidth: 300,
+                      }}
+                    />
                     <Button
-                      variant="outline-dark"
+                      variant="outline-info"
                       size="sm"
-                      className="mb-3"
-                      style={{ borderColor: "#200E32", color: "#200E32" }}
+                      style={{
+                        borderColor: "#92A8D1",
+                        color: "#5f6f86",
+                        background: "transparent",
+                        minWidth: 90,
+                      }}
                       onClick={() => handleToggle("name")}
                     >
-                      {editingField.name ? "Cancel" : "Edit Username"}
+                      {editingField.name ? "Cancel" : "Edit"}
                     </Button>
-                    <Form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleFieldSubmit("name");
-                      }}
-                    >
-                      <Form.Group controlId="formName" className="mb-3">
-                        <Form.Control
-                          type="text"
-                          name="name"
-                          value={inputs.name}
-                          onChange={(e) =>
-                            setInputs({ ...inputs, name: e.target.value })
-                          }
-                          disabled={!editingField.name}
-                        />
-                      </Form.Group>
-                    </Form>
-                  </div>
-                  <Button
-                    variant="dark"
-                    className="w-100"
-                    style={{ backgroundColor: "#200E32", border: "none" }}
-                    disabled={!editingField.name}
-                    onClick={() => handleFieldSubmit("name")}
-                  >
-                    Save Username
-                  </Button>
-                </Card.Body>
-              </Card>
-            </div>
-
-            {/* Card 2: Email */}
-            <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
-              <Card style={{ border: "none" }}>
-                <Card.Header
-                  style={{
-                    backgroundColor: "#f8f9fa",
-                    color: "#200E32",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Email
-                </Card.Header>
-                <Card.Body className="d-flex flex-column justify-content-between">
-                  <div>
-                    {/* <OverlayTrigger
-                      delay={{ show: 250, hide: 400 }}
-                      overlay={renderTooltip}
-                    >
-                      <Form.Label style={{ color: "#200E32" }}>
-                        Current Email
-                      </Form.Label>
-                    </OverlayTrigger> */}
                     <Button
-                      variant="outline-dark"
+                      style={{
+                        backgroundColor: "#92A8D1",
+                        color: "#fff",
+                        border: "none",
+                        fontWeight: 600,
+                        minWidth: 90,
+                      }}
+                      disabled={!editingField.name}
+                      onClick={() => handleFieldSubmit("name")}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </Form.Group>
+                {/* Email */}
+                <Form.Group className="mb-4">
+                  <Form.Label style={{ color: "#5f6f86", fontWeight: 600 }}>
+                    Email
+                  </Form.Label>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <Form.Control
+                      type="email"
+                      value={inputs.email}
+                      disabled={!editingField.email}
+                      onChange={(e) =>
+                        setInputs({ ...inputs, email: e.target.value })
+                      }
+                      style={{
+                        background: "#f7faff",
+                        color: "#2d3e50",
+                        border: "1px solid #92A8D1",
+                        borderRadius: 8,
+                        maxWidth: 300,
+                      }}
+                    />
+                    <Button
+                      variant="outline-info"
                       size="sm"
-                      className="mb-3"
-                      style={{ borderColor: "#200E32", color: "#200E32" }}
+                      style={{
+                        borderColor: "#92A8D1",
+                        color: "#5f6f86",
+                        background: "transparent",
+                        minWidth: 90,
+                      }}
                       onClick={() => handleToggle("email")}
                     >
-                      {editingField.email ? "Cancel" : "Edit Email"}
+                      {editingField.email ? "Cancel" : "Edit"}
                     </Button>
-                    <Form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleFieldSubmit("email");
-                      }}
-                    >
-                      <Form.Group controlId="formEmail" className="mb-3">
-                        <Form.Control
-                          type="email"
-                          name="email"
-                          value={inputs.email}
-                          onChange={(e) =>
-                            setInputs({ ...inputs, email: e.target.value })
-                          }
-                          disabled={!editingField.email}
-                        />
-                      </Form.Group>
-                    </Form>
-                  </div>
-                  <Button
-                    variant="dark"
-                    className="w-100"
-                    style={{ backgroundColor: "#200E32", border: "none" }}
-                    disabled={!editingField.email}
-                    onClick={() => handleFieldSubmit("email")}
-                  >
-                    Save Email
-                  </Button>
-                </Card.Body>
-              </Card>
-            </div>
-
-            {/* Card 3: Password */}
-            <div style={{ flex: "0 1 30%", minWidth: "300px" }}>
-              <Card style={{ border: "none" }}>
-                <Card.Header
-                  style={{
-                    backgroundColor: "#f8f9fa",
-                    color: "#200E32",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Password
-                </Card.Header>
-                <Card.Body className="d-flex flex-column justify-content-between">
-                  <div>
                     <Button
-                      variant="outline-dark"
+                      style={{
+                        backgroundColor: "#92A8D1",
+                        color: "#fff",
+                        border: "none",
+                        fontWeight: 600,
+                        minWidth: 90,
+                      }}
+                      disabled={!editingField.email}
+                      onClick={() => handleFieldSubmit("email")}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </Form.Group>
+                {/* Password */}
+                <Form.Group className="mb-2">
+                  <Form.Label style={{ color: "#5f6f86", fontWeight: 600 }}>
+                    Password
+                  </Form.Label>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <Form.Control
+                      type="password"
+                      value={inputs.password}
+                      disabled={!editingField.password}
+                      onChange={(e) =>
+                        setInputs({ ...inputs, password: e.target.value })
+                      }
+                      style={{
+                        background: "#f7faff",
+                        color: "#2d3e50",
+                        border: "1px solid #92A8D1",
+                        borderRadius: 8,
+                        maxWidth: 300,
+                      }}
+                    />
+                    <Button
+                      variant="outline-info"
                       size="sm"
-                      className="mb-3"
-                      style={{ borderColor: "#200E32", color: "#200E32" }}
+                      style={{
+                        borderColor: "#92A8D1",
+                        color: "#5f6f86",
+                        background: "transparent",
+                        minWidth: 90,
+                      }}
                       onClick={() => handleToggle("password")}
                     >
-                      {editingField.password ? "Cancel" : "Edit Password"}
+                      {editingField.password ? "Cancel" : "Edit"}
                     </Button>
-                    <Form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleFieldSubmit("password");
+                    <Button
+                      style={{
+                        backgroundColor: "#92A8D1",
+                        color: "#fff",
+                        border: "none",
+                        fontWeight: 600,
+                        minWidth: 90,
                       }}
+                      disabled={!editingField.password}
+                      onClick={() => handleFieldSubmit("password")}
                     >
-                      <Form.Group controlId="formPassword" className="mb-3">
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={inputs.password}
-                          onChange={(e) =>
-                            setInputs({ ...inputs, password: e.target.value })
-                          }
-                          disabled={!editingField.password}
-                        />
-                      </Form.Group>
-                    </Form>
+                      Save
+                    </Button>
                   </div>
-                  <Button
-                    variant="dark"
-                    className="w-100"
-                    style={{ backgroundColor: "#200E32", border: "none" }}
-                    disabled={!editingField.password}
-                    onClick={() => handleFieldSubmit("password")}
-                  >
-                    Save Password
-                  </Button>
-                </Card.Body>
-              </Card>
-            </div>
-          </div>
-        )}
+                </Form.Group>
+              </Form>
+            )}
+          </Card.Body>
+        </Card>
       </main>
     </div>
   );
